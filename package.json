@@ -1,0 +1,18 @@
+{
+  "name": "matrix-calculator",
+  "version": "1.0.0",
+  "description": "A desktop matrix calculator built with Electron",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^27.1.0"
+  },
+  "dependencies": {
+    "mathjs": "^12.0.0"
+  }
+} 

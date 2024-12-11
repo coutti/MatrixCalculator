@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>矩阵计算器</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            padding: 30px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            font-weight: 600;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h3 {
+            color: #34495e;
+            margin: 15px 0;
+            font-size: 1.5em;
+            font-weight: 500;
+        }
+
+        .matrix-input {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s ease;
+        }
+
+        .matrix-input:hover {
+            transform: translateY(-2px);
+        }
+
+        .matrix-grid {
+            display: inline-grid;
+            gap: 8px;
+            margin: 15px;
+            padding: 15px;
+            background: rgba(236, 240, 241, 0.5);
+            border-radius: 8px;
+        }
+
+        .matrix-cell {
+            width: 60px;
+            height: 40px;
+            text-align: center;
+            border: 2px solid #bdc3c7;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: all 0.2s ease;
+            outline: none;
+        }
+
+        .matrix-cell:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin: 30px 0;
+            padding: 20px;
+            background: rgba(236, 240, 241, 0.5);
+            border-radius: 12px;
+        }
+
+        .controls-group {
+            width: 100%;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .controls-group h4 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        button {
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: 500;
+            color: white;
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+            background: linear-gradient(135deg, #45a049 0%, #388E3C 100%);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .dimension-controls {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 16px;
+            color: #2c3e50;
+        }
+
+        input[type="number"] {
+            width: 60px;
+            height: 35px;
+            text-align: center;
+            border: 2px solid #bdc3c7;
+            border-radius: 6px;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        input[type="number"]:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+        }
+
+        .result {
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(236, 240, 241, 0.8);
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .result h3 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .result .matrix-grid {
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .result .matrix-cell {
+            background: #f8f9fa;
+            border-color: #95a5a6;
+            color: #2c3e50;
+            font-weight: 500;
+        }
+
+        .scalar-result {
+            text-align: center;
+            padding: 15px;
+            background: rgba(255,255,255,0.9);
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+
+        .scalar-result h4 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .scalar-result p {
+            font-size: 1.2em;
+            color: #2980b9;
+        }
+
+        .matrix-result {
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .matrix-result h4 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+            
+            .container {
+                padding: 20px;
+            }
+            
+            .controls {
+                flex-direction: column;
+            }
+            
+            button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>矩阵计算器</h1>
+        
+        <div class="matrix-input">
+            <h3>矩阵 A</h3>
+            <div class="dimension-controls">
+                <label>行数: <input type="number" id="rowsA" value="2" min="1" max="5"></label>
+                <label>列数: <input type="number" id="colsA" value="2" min="1" max="5"></label>
+                <button onclick="createMatrixA()">创建矩阵</button>
+            </div>
+            <div id="matrixA" class="matrix-grid"></div>
+        </div>
+
+        <div class="matrix-input">
+            <h3>矩阵 B</h3>
+            <div class="dimension-controls">
+                <label>行数: <input type="number" id="rowsB" value="2" min="1" max="5"></label>
+                <label>列数: <input type="number" id="colsB" value="2" min="1" max="5"></label>
+                <button onclick="createMatrixB()">创建矩阵</button>
+            </div>
+            <div id="matrixB" class="matrix-grid"></div>
+        </div>
+
+        <div class="controls">
+            <button onclick="addMatrices()">矩阵加法</button>
+            <button onclick="subtractMatrices()">矩阵减法</button>
+            <button onclick="multiplyMatrices()">矩阵乘法</button>
+            <button onclick="transposeMatrix('A')">转置矩阵 A</button>
+            <button onclick="transposeMatrix('B')">转置矩阵 B</button>
+            
+            <div class="controls-group">
+                <h4>高级矩阵运算 (矩阵 A)</h4>
+                <button onclick="calculateDeterminant('A')">计算行列式</button>
+                <button onclick="calculateInverse('A')">计算逆矩阵</button>
+                <button onclick="calculateEigenvalues('A')">计算特征值</button>
+                <button onclick="calculateRank('A')">计算矩阵的秩</button>
+                <button onclick="calculateLU('A')">LU分解</button>
+                <button onclick="calculateQR('A')">QR分解</button>
+            </div>
+            
+            <div class="controls-group">
+                <h4>高级矩阵运算 (矩阵 B)</h4>
+                <button onclick="calculateDeterminant('B')">计算行列式</button>
+                <button onclick="calculateInverse('B')">计算逆矩阵</button>
+                <button onclick="calculateEigenvalues('B')">计算特征值</button>
+                <button onclick="calculateRank('B')">计算矩阵的秩</button>
+                <button onclick="calculateLU('B')">LU分解</button>
+                <button onclick="calculateQR('B')">QR分解</button>
+            </div>
+        </div>
+
+        <div class="result">
+            <h3>计算结果</h3>
+            <div id="result" class="matrix-grid"></div>
+        </div>
+    </div>
+    <script src="renderer.js"></script>
+</body>
+</html> 
